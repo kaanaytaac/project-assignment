@@ -19,8 +19,6 @@ const LoginSignin = () => {
     navigate("/home");
   }
 
-  let x;
-  let y;
   function handleSubmit(event: any) {
     event.preventDefault();
   }
@@ -31,9 +29,7 @@ const LoginSignin = () => {
         <div className={Login.head}>Better Work With Us</div>
         <div className={Login.inputs}>
           <p>
-            <label className={x} htmlFor="email">
-              Email
-            </label>
+            <label htmlFor="email">Email</label>
 
             <input
               className={Login.input}
@@ -47,9 +43,7 @@ const LoginSignin = () => {
             />
           </p>
           <p>
-            <label className={y} htmlFor="password">
-              Password
-            </label>
+            <label htmlFor="password">Password</label>
             <input
               className={Login.input}
               type="password"
