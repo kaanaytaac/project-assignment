@@ -44,3 +44,81 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+<!-- function for spica e-mail verification -->
+<!--
+export async function sendMail(req,res){
+const data = req.body;
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+service:'gmail',
+auth: {
+user: data.user,
+pass:data.pass
+}
+});
+
+    const message = {
+        from: 'Hastane' + data.user,
+        to:data.to,
+        subject:data.title,
+        text:data.text,
+        attachments: data.attachments
+    };
+    const info = await transporter.sendMail(message);
+    res.status(200.send(info))
+
+} -->
+
+<!-- my app password for gmail -->
+<!-- gvep ebyj jwfp kxif -->
+
+// import \* as Identity from "@spica-devkit/identity";
+
+// const SECRET_API_KEY = process.env.SECRET_API_KEY;
+
+// export async function login(req, res) {
+// Identity.initialize({ apikey: SECRET_API_KEY });
+
+// const { email, password } = req.body;
+
+// let jwt;
+// try {
+// jwt = await Identity.login(email, password)
+// } catch (err) {
+// res.status(400).send(err)
+// }
+
+// return res.status(200).send({
+// token: jwt
+// })
+// }
+
+// export async function registration(req, res) {
+// Identity.initialize({ apikey: SECRET_API_KEY });
+
+// const { email, password } = req.body;
+// console.log(req.body)
+
+// let newIdentity = {
+// identifier: email,
+// password: password,
+// };
+
+// try {
+// await Identity.insert(newIdentity);
+// } catch (err) {
+// return res.status(400).send(err)
+// }
+
+// let jwt;
+// try {
+// jwt = await Identity.login(email, password)
+// console.log(jwt)
+// } catch (err) {
+// return res.status(400).send(err)
+// }
+// return res.status(200).send({
+// token: jwt
+// })
+// }

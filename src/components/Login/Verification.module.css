@@ -1,0 +1,18 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input {
+  width: 300px;
+  padding: 0.75rem 1rem;
+  box-sizing: border-box;
+  line-height: 1.5;
+  background-color: #d1d5db;
+  color: #374151;
+  border: 3px solid transparent;
+  border-radius: 0.25rem;
+  margin: 8px 0;
+  margin-right: 1rem;
+}
