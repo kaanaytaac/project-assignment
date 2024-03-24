@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Login from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { dataService } from "../../services/api/Data";
@@ -6,21 +6,31 @@ import { Outlet } from "react-router-dom";
 import useCreateAccountStore from "../../store/store";
 
 const LoginSignin = () => {
-  const [emailIsInvalid, setEmailIsInvalid] = useState();
-  const [passwordIsInvalid, setPasswordIsInvalid] = useState();
-  const { users, setUsers } = useCreateAccountStore();
+  const [loginValues, setLoginValues] = useState<{ email: string; password: string }>({
+    email: "",
+    password: "",
+  });
+  const { users } = useCreateAccountStore();
   console.log(users);
+  const loginValidity = users.some((user) => {
+    if (user.email === loginValues.email && user.password === loginValues.password) return true;
+  });
   const navigate = useNavigate();
-
-  function navigateHandler() {
-    navigate("/signup");
+  function handleInputChange(identifier: string, value: string) {
+    setLoginValues({
+      ...loginValues,
+      [identifier]: value,
+    });
   }
-  function navbarHandler() {
-    navigate("/home");
-  }
-
   function handleSubmit(event: any) {
     event.preventDefault();
+    if (loginValidity) {
+      navigate("/home");
+    } else {
+      alert("Your email or password is wrong!");
+    }
+
+    return;
   }
 
   return (
@@ -37,9 +47,8 @@ const LoginSignin = () => {
               name="email"
               type="email"
               placeholder="Please enter your e-mail"
-              // onChange={(event) =>
-              //   handleInputChange("email", event.target.value)
-              // }
+              onChange={(e) => handleInputChange("email", e.target.value)}
+              value={loginValues.email}
             />
           </p>
           <p>
@@ -50,11 +59,8 @@ const LoginSignin = () => {
               id="password"
               name="password"
               placeholder="Please enter your password"
-              minLength={6}
-
-              // onChange={(event) =>
-              //   handleInputChange("password", event.target.value)
-              // }
+              onChange={(e) => handleInputChange("password", e.target.value)}
+              value={loginValues.password}
             />
           </p>
         </div>
@@ -62,14 +68,8 @@ const LoginSignin = () => {
           <Link to="/signup" className={Login.create}>
             Create a new account
           </Link>
-          <button
-            className={Login.sign}
-            //  onClick={navbarHandler}
-          >
-            SIGN IN
-          </button>
+          <button className={Login.sign}>SIGN IN</button>
         </div>
-        {emailIsInvalid || passwordIsInvalid ? <div className={Login.popup}>Your email or password is invalid!</div> : undefined}
       </div>
     </form>
   );
