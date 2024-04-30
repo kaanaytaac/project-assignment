@@ -1,12 +1,12 @@
 import "./App.css";
 import LoginSignin from "./components/Login/LoginSignin";
 import CreateAccount from "./components/Login/CreateAccount";
-import Navbar from "./components/Navbar/Navbar";
 import { dataService } from "./services/api/Data";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import HomeRoot from "./pages/HomeRoot";
 import Verification from "./components/Login/Verification";
+import Tasks from "./components/Task/Tasks";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <HomeRoot />,
-    // children: [{ index: true, element: <Navbar /> }],
+    children: [{ path: "/home/tasks", element: <Tasks /> }],
   },
 ]);
 

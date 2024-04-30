@@ -1,16 +1,14 @@
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
 import SideBar from "../components/Navbar/SideBar";
 
 const HomeRoot = () => {
   return (
-    <>
-      {/* <Navbar /> */}
+    <div>
       <SideBar />
-      <main>
+      <main style={{ marginLeft: "150px", marginTop: "2rem" }}>
         <Outlet />
       </main>
-    </>
+    </div>
   );
 };
 export default HomeRoot;
