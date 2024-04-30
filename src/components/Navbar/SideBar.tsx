@@ -27,13 +27,13 @@ const SideBar = () => {
 
         <div className={sidebarClass}>
           <ul className={classes.menu}>
-            <li>
+            <li className={classes.links}>
               <Link to="#">Home</Link>
             </li>
-            <li>
-              <Link to="#">About</Link>
+            <li className={classes.links}>
+              <Link to="/home/tasks">Tasks</Link>
             </li>
-            <li>
+            <li className={classes.links}>
               <Link to="#">Contact</Link>
             </li>
           </ul>

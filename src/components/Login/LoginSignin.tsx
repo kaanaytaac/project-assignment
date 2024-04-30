@@ -3,18 +3,20 @@ import Login from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { dataService } from "../../services/api/Data";
 import { Outlet } from "react-router-dom";
+import authService from "../../services/api/Authentication";
 import useCreateAccountStore from "../../store/store";
+import { AxiosError } from "axios";
 
 const LoginSignin = () => {
   const [loginValues, setLoginValues] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
   });
-  const { users } = useCreateAccountStore();
-  console.log(users);
-  const loginValidity = users.some((user) => {
-    if (user.email === loginValues.email && user.password === loginValues.password) return true;
-  });
+  // const { users } = useCreateAccountStore();
+  // console.log(users);
+  // const loginValidity = users.some((user) => {
+  //   if (user.email === loginValues.email && user.password === loginValues.password) return true;
+  // });
   const navigate = useNavigate();
   function handleInputChange(identifier: string, value: string) {
     setLoginValues({
@@ -22,13 +24,21 @@ const LoginSignin = () => {
       [identifier]: value,
     });
   }
-  function handleSubmit(event: any) {
+  async function handleSubmit(event: any) {
     event.preventDefault();
-    if (loginValidity) {
-      navigate("/home");
-    } else {
-      alert("Your email or password is wrong!");
+    try {
+      const signInResponse = await authService.signIn({ email: loginValues.email, password: loginValues.password });
+      if (signInResponse) {
+        navigate("/home");
+      }
+    } catch (error: any) {
+      console.log(error?.response.data);
     }
+    // if (loginValidity) {
+    //   navigate("/home");
+    // } else {
+    //   alert("Your email or password is wrong!");
+    // }
 
     return;
   }

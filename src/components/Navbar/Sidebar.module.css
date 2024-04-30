@@ -42,9 +42,22 @@
 }
 
 .menu li a {
-  width: 100%;
   color: #fff;
   text-decoration: none;
+  border: none !important;
+  padding: none !important;
+}
+.listItems {
+  border: none !important;
+  padding: none !important;
+}
+
+.links {
+  padding: 4px 8px !important;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .menu li a:hover {
