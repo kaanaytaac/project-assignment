@@ -11,6 +11,8 @@ interface State {
   setEnteredValues: (state: TenteredValue) => void;
   verificationNumber: string;
   setVerificationNumber: (state: string) => void;
+  currentUser: { [key: string]: any };
+  setCurrentUser: (currentUser: { [key: string]: any }) => void;
 }
 
 const useCreateAccountStore = create<State>((set) => ({
@@ -20,6 +22,8 @@ const useCreateAccountStore = create<State>((set) => ({
   setEnteredValues: (state: TenteredValue) => set({ enteredValues: state }),
   verificationNumber: "",
   setVerificationNumber: (state: string) => set({ verificationNumber: state }),
+  currentUser: {},
+  setCurrentUser: (state: { [key: string]: any }) => set({ currentUser: state }),
 }));
 
 export default useCreateAccountStore;

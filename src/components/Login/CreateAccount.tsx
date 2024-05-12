@@ -5,11 +5,12 @@ import useCreateAccountStore from "../../store/store";
 import { dataService } from "../../services/api/Data";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { sendMail } from "../sendmail/sendMail";
-import { log } from "console";
 import authService from "../../services/api/Authentication";
+import Spinner from "../Spinner";
 
 const CreateAccount = () => {
   const { users, setUsers, enteredValues, setEnteredValues, setVerificationNumber } = useCreateAccountStore();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,6 +27,7 @@ const CreateAccount = () => {
       [identifier]: value,
     });
   }
+
   function getNumber() {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const codeLength = 6;
@@ -43,11 +45,12 @@ const CreateAccount = () => {
   function handleSubmit(event: any) {
     event.preventDefault();
     if (emailIsValid && passwordIsValid) {
+      setIsLoggingIn(true);
       setUsers([...users, enteredValues]);
       sendMail(enteredValues.email, getNumber());
       navigate("/signup/verification");
     } else {
-      alert("You provide an wrong information.");
+      alert("You provide a wrong information.");
     }
   }
 
@@ -84,7 +87,7 @@ const CreateAccount = () => {
               required
             />
           </p>
-          {!emailIsValid && <p>Please enter a valid gmail address.</p>}
+          {checkValidity ? <p>This mail is already exists. </p> : !emailIsValid && <p>Please enter a valid gmail address.</p>}
           <p>
             <label htmlFor="password">Password</label>
             <input
@@ -101,9 +104,7 @@ const CreateAccount = () => {
           </p>
           {!passwordIsValid && <p>Please enter more than 6 characters.</p>}
         </div>
-        <div className={Create.actions}>
-          <button className={Create.create}>Create a new account</button>
-        </div>
+        <div className={Create.actions}>{isLoggingIn ? <Spinner /> : <button className={Create.create}>Create a new account</button>}</div>
       </div>
     </form>
   );

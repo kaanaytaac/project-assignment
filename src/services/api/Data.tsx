@@ -12,8 +12,8 @@ class DataService {
     return Bucket.data.get(bucketId, bucketDataId);
   };
 
-  getDataAll = async (bucketId: string) => {
-    return Bucket.data.getAll(bucketId);
+  getDataAll = async (bucketId: string, queryParams?: { [key: string]: any }) => {
+    return Bucket.data.getAll(bucketId, { queryParams });
   };
 
   insertData = async (bucketId: string, document: { [key: string]: any }) => {
