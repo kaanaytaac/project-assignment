@@ -5,11 +5,12 @@ import useCreateAccountStore from "../../store/store";
 import { dataService } from "../../services/api/Data";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { sendMail } from "../sendmail/sendMail";
-import { log } from "console";
 import authService from "../../services/api/Authentication";
+import Spinner from "../Spinner";
 
 const CreateAccount = () => {
   const { users, setUsers, enteredValues, setEnteredValues, setVerificationNumber } = useCreateAccountStore();
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,12 +21,18 @@ const CreateAccount = () => {
   const emailIsValid: boolean = !checkValidity && enteredValues.email.includes("@gmail.com");
   const passwordIsValid: boolean = enteredValues.password.trim().length > 6;
 
+  const maxDateAllowed = new Date();
+  maxDateAllowed.setFullYear(maxDateAllowed.getFullYear() - 12);
+  const maxDateString = maxDateAllowed.toISOString().split("T")[0];
+
   function handleInputChange(identifier: string, value: string) {
     setEnteredValues({
       ...enteredValues,
       [identifier]: value,
+      // [identifier]: identifier === "weight" ? (value ? parseFloat(value) : undefined) : value,
     });
   }
+
   function getNumber() {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const codeLength = 6;
@@ -43,13 +50,15 @@ const CreateAccount = () => {
   function handleSubmit(event: any) {
     event.preventDefault();
     if (emailIsValid && passwordIsValid) {
+      setIsLoggingIn(true);
       setUsers([...users, enteredValues]);
       sendMail(enteredValues.email, getNumber());
       navigate("/signup/verification");
     } else {
-      alert("You provide an wrong information.");
+      alert("You provide a wrong information.");
     }
   }
+  console.log(enteredValues);
 
   return (
     <form className={Create.container} onSubmit={handleSubmit}>
@@ -69,7 +78,31 @@ const CreateAccount = () => {
               required
             />
           </p>
-
+          <p>
+            <label htmlFor="dateOfBirth">Date of Birth</label>
+            <input
+              className={Create.input}
+              type="date"
+              id="dateOfBirth"
+              name="dateOfBirth"
+              max={maxDateString}
+              onChange={(event) => handleInputChange("dateOfBirth", event.target.value)}
+              value={enteredValues.dateOfBirth}
+              required
+            />
+          </p>
+          <p>
+            <label htmlFor="weight">Weight:</label>
+            <input
+              className={Create.input}
+              type="number"
+              id="weight"
+              name="weight"
+              onChange={(event) => handleInputChange("weight", event.target.value)}
+              value={enteredValues.weight}
+              required
+            />
+          </p>
           <p>
             <label htmlFor="email">Email</label>
             <input
@@ -84,7 +117,7 @@ const CreateAccount = () => {
               required
             />
           </p>
-          {!emailIsValid && <p>Please enter a valid gmail address.</p>}
+          {checkValidity ? <p>This mail is already exists. </p> : !emailIsValid && <p>Please enter a valid gmail address.</p>}
           <p>
             <label htmlFor="password">Password</label>
             <input
@@ -101,9 +134,7 @@ const CreateAccount = () => {
           </p>
           {!passwordIsValid && <p>Please enter more than 6 characters.</p>}
         </div>
-        <div className={Create.actions}>
-          <button className={Create.create}>Create a new account</button>
-        </div>
+        <div className={Create.actions}>{isLoggingIn ? <Spinner /> : <button className={Create.create}>Create a new account</button>}</div>
       </div>
     </form>
   );

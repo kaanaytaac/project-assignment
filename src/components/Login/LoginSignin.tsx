@@ -6,18 +6,17 @@ import { Outlet } from "react-router-dom";
 import authService from "../../services/api/Authentication";
 import useCreateAccountStore from "../../store/store";
 import { AxiosError } from "axios";
+import Spinner from "../Spinner";
 
 const LoginSignin = () => {
   const [loginValues, setLoginValues] = useState<{ email: string; password: string }>({
     email: "",
     password: "",
   });
-  // const { users } = useCreateAccountStore();
-  // console.log(users);
-  // const loginValidity = users.some((user) => {
-  //   if (user.email === loginValues.email && user.password === loginValues.password) return true;
-  // });
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   const navigate = useNavigate();
+
   function handleInputChange(identifier: string, value: string) {
     setLoginValues({
       ...loginValues,
@@ -26,19 +25,18 @@ const LoginSignin = () => {
   }
   async function handleSubmit(event: any) {
     event.preventDefault();
+    setIsLoggingIn(true);
+
     try {
       const signInResponse = await authService.signIn({ email: loginValues.email, password: loginValues.password });
       if (signInResponse) {
         navigate("/home");
       }
     } catch (error: any) {
+      alert("your email or password is wrong");
+      setIsLoggingIn(false);
       console.log(error?.response.data);
     }
-    // if (loginValidity) {
-    //   navigate("/home");
-    // } else {
-    //   alert("Your email or password is wrong!");
-    // }
 
     return;
   }
@@ -78,7 +76,13 @@ const LoginSignin = () => {
           <Link to="/signup" className={Login.create}>
             Create a new account
           </Link>
-          <button className={Login.sign}>SIGN IN</button>
+          {isLoggingIn ? (
+            <div style={{ marginLeft: "4px" }} className={Login.spinner}>
+              <Spinner />
+            </div>
+          ) : (
+            <button className={Login.sign}>SIGN IN</button>
+          )}
         </div>
       </div>
     </form>

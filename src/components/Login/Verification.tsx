@@ -4,20 +4,33 @@ import useCreateAccountStore from "../../store/store";
 import { useState } from "react";
 import { dataService } from "../../services/api/Data";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Spinner from "../Spinner";
+
 const Verification = () => {
   const { enteredValues, verificationNumber, setEnteredValues } = useCreateAccountStore();
   const [enteredCode, setEnteredCode] = useState();
+  const [isSigningUp, setIsSigningUp] = useState(false);
+
   const navigate = useNavigate();
+
   function handleChange(e: any) {
     setEnteredCode(e.target.value);
   }
+
   function handleSubmit() {
     if (verificationNumber === enteredCode) {
+      setIsSigningUp(true);
       authService.signUp(enteredValues).then(function () {
         let document = {
           fullname: enteredValues.name,
           email: enteredValues.email,
           password: enteredValues.password,
+          role: "patient",
+          // ispassive: false,
+          weight: enteredValues.weight,
+          dobirth: enteredValues.dateOfBirth,
         };
 
         dataService.insertData("65ef137ca1ccd0002cea9989", document);
@@ -25,6 +38,8 @@ const Verification = () => {
           name: "",
           email: "",
           password: "",
+          dateOfBirth: "",
+          weight: undefined,
         });
         navigate("/signin");
       });
@@ -38,7 +53,7 @@ const Verification = () => {
         <div>
           <label htmlFor="verification">Please provide your verification code.</label>
           <input className={classes.input} id="verification" onChange={handleChange} />
-          <button onClick={handleSubmit}>submit</button>
+          {isSigningUp ? <Spinner /> : <button onClick={handleSubmit}>Submit</button>}
         </div>
       </div>
     </>

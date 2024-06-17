@@ -6,7 +6,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import HomeRoot from "./pages/HomeRoot";
 import Verification from "./components/Login/Verification";
-import Tasks from "./components/Task/Tasks";
+import Upload from "./pages/Upload/Upload";
+import Tasks from "./pages/Tasks/Tasks";
+import Admin from "./pages/Admin/Admin";
+import Reports from "./pages/Reports/Reports";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +24,12 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <HomeRoot />,
-    children: [{ path: "/home/tasks", element: <Tasks /> }],
+    children: [
+      { path: "/home/upload", element: <Upload /> },
+      { path: "/home/tasks", element: <Tasks /> },
+      { path: "/home/admin", element: <Admin /> },
+      { path: "/home/report", element: <Reports /> },
+    ],
   },
 ]);
 
