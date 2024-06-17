@@ -21,10 +21,15 @@ const CreateAccount = () => {
   const emailIsValid: boolean = !checkValidity && enteredValues.email.includes("@gmail.com");
   const passwordIsValid: boolean = enteredValues.password.trim().length > 6;
 
+  const maxDateAllowed = new Date();
+  maxDateAllowed.setFullYear(maxDateAllowed.getFullYear() - 12);
+  const maxDateString = maxDateAllowed.toISOString().split("T")[0];
+
   function handleInputChange(identifier: string, value: string) {
     setEnteredValues({
       ...enteredValues,
       [identifier]: value,
+      // [identifier]: identifier === "weight" ? (value ? parseFloat(value) : undefined) : value,
     });
   }
 
@@ -53,6 +58,7 @@ const CreateAccount = () => {
       alert("You provide a wrong information.");
     }
   }
+  console.log(enteredValues);
 
   return (
     <form className={Create.container} onSubmit={handleSubmit}>
@@ -72,7 +78,31 @@ const CreateAccount = () => {
               required
             />
           </p>
-
+          <p>
+            <label htmlFor="dateOfBirth">Date of Birth</label>
+            <input
+              className={Create.input}
+              type="date"
+              id="dateOfBirth"
+              name="dateOfBirth"
+              max={maxDateString}
+              onChange={(event) => handleInputChange("dateOfBirth", event.target.value)}
+              value={enteredValues.dateOfBirth}
+              required
+            />
+          </p>
+          <p>
+            <label htmlFor="weight">Weight:</label>
+            <input
+              className={Create.input}
+              type="number"
+              id="weight"
+              name="weight"
+              onChange={(event) => handleInputChange("weight", event.target.value)}
+              value={enteredValues.weight}
+              required
+            />
+          </p>
           <p>
             <label htmlFor="email">Email</label>
             <input

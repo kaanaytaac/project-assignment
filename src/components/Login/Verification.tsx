@@ -27,6 +27,10 @@ const Verification = () => {
           fullname: enteredValues.name,
           email: enteredValues.email,
           password: enteredValues.password,
+          role: "patient",
+          // ispassive: false,
+          weight: enteredValues.weight,
+          dobirth: enteredValues.dateOfBirth,
         };
 
         dataService.insertData("65ef137ca1ccd0002cea9989", document);
@@ -34,6 +38,8 @@ const Verification = () => {
           name: "",
           email: "",
           password: "",
+          dateOfBirth: "",
+          weight: undefined,
         });
         navigate("/signin");
       });

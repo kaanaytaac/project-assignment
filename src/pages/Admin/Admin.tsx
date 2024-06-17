@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { dataService } from "../../services/api/Data";
 import useCreateAccountStore from "../../store/store";
 import Switch from "@mui/material/Switch";
+
 const Admin = () => {
   const bucketID = "65ef137ca1ccd0002cea9989";
   const [users, setUsers] = useState<any>([]);

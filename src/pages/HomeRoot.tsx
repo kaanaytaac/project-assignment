@@ -7,6 +7,11 @@ import authService from "../services/api/Authentication";
 const HomeRoot = () => {
   const { currentUser, setCurrentUser } = useCreateAccountStore();
 
+  function logHandler() {
+    authService.logOut();
+    navigate("/");
+  }
+
   const navigate = useNavigate();
   useEffect(() => {
     const user: string | null = localStorage.getItem("user");
@@ -30,7 +35,10 @@ const HomeRoot = () => {
       .catch((err) => console.log(err));
   }, []);
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <button style={{ position: "absolute", right: "0" }} onClick={logHandler}>
+        log out
+      </button>
       <SideBar />
       <main style={{ marginLeft: "150px", marginTop: "2rem" }}>
         <Outlet />
